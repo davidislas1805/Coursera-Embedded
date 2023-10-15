@@ -36,32 +36,111 @@ void main(int argc, char *argv[]) {
                               201,   6,  12,  60,   8,   2,   5,  67,
                                 7,  87, 250, 230,  99,   3, 100,  90};
 
+  unsigned char sorted_test[SIZE];
+  /* Statistics and Printing Functions Go Here */
+  printf("\nShowing the given array: \n\n");
+  print_array(test, SIZE);
+  print_statistics(test, SIZE);
   
+  sort_array(test, sorted_test, SIZE, 0);
+  printf("\nShowing the sorted array: \n\n");
+  print_array(sorted_test, SIZE);
 }
 
 /* Add other Implementation File Code Here */
 
 void print_array(unsigned char * data_array_ptr, unsigned int array_size){
 
-  
+  for(unsigned char i = 0; i < array_size; i++){
+    if( data_array_ptr[i] < 10 ) printf("  %i ", data_array_ptr[i]);
+    else if ( data_array_ptr[i] < 100 ) printf(" %i ", data_array_ptr[i]);
+    else printf("%i ", data_array_ptr[i]);
+    
+    if( (i + 1) % 8 == 0 ) printf("\n");
+  }
 };
 
 void print_statistics(unsigned char * data_array_ptr, unsigned int array_size){
+  unsigned char array_mean, array_median, array_minimum, array_maximum;
   
+  array_mean = find_mean(data_array_ptr, array_size);
+  array_median = find_median(data_array_ptr, array_size);
+  array_minimum = find_minimum(data_array_ptr, array_size);
+  array_maximum = find_maximum(data_array_ptr, array_size);
+
+  printf("\nRounded mean: %d \n\nRounded Median: %d \n\nMaximum: %d \n\nMinimum: %d \n", array_mean, array_median, array_maximum, array_minimum);
 };
 
 unsigned char find_mean(unsigned char * data_array_ptr, unsigned int array_size){
-  
+  unsigned char mean = 0;
+
+  for(unsigned char i = 0; i < array_size; i++){
+    mean += data_array_ptr[i];
+  };
+
+  mean /= array_size;
+  return mean;
 };
 
 unsigned char find_median(unsigned char * data_array_ptr, unsigned int array_size){
+  unsigned char temp_array_element = 0, median_point = array_size / 2, check_status = 0, sorted_array[array_size];
   
+  sort_array(data_array_ptr, sorted_array, array_size, 1);
+  
+  if ( array_size % 2 == 0 ){
+    return (sorted_array[median_point - 1] + sorted_array[median_point]) / 2;
+  } else{
+    return sorted_array[median_point - 1];
+  };
+};
+
+unsigned char check_array(unsigned char * data_array_ptr, unsigned int array_size, unsigned char check_type){
+  unsigned char check_promise = 0;
+  for (unsigned char i = 0; i < array_size - 1; i++){
+    if ( check_type ) check_promise = ((data_array_ptr[i] < data_array_ptr[i + 1] || data_array_ptr[i] == data_array_ptr[i + 1]) ? 1 : 0);
+    else check_promise = ((data_array_ptr[i] > data_array_ptr[i + 1] || data_array_ptr[i] == data_array_ptr[i + 1]) ? 1 : 0); 
+    
+    if(check_promise == 0) break;
+  }
+  return check_promise;
 };
 
 unsigned char find_maximum(unsigned char * data_array_ptr, unsigned int array_size){
-  
+  unsigned char maximum_number = data_array_ptr[0];
+  for(unsigned char i = 0; i < array_size; i++){
+    if ( data_array_ptr[i] > maximum_number ) maximum_number = data_array_ptr[i];
+  };
+  return maximum_number;
 };
 
 unsigned char find_minimum(unsigned char * data_array_ptr, unsigned int array_size){
-  
+  unsigned char minimum_number = data_array_ptr[0];
+  for(unsigned char i = 0; i < array_size; i++){
+    if ( data_array_ptr[i] < minimum_number ) minimum_number = data_array_ptr[i];
+  };
+  return minimum_number;
+};
+
+void sort_array(unsigned char * data_array_ptr, unsigned char * sorted_array_ptr, unsigned int array_size, unsigned char sort_type){
+  unsigned char check_status = 0, temp_array_element;
+  for (unsigned char i = 0; i < array_size; i++) sorted_array_ptr[i] = data_array_ptr[i];
+  while (check_status == 0)
+  {
+    for (unsigned char i = 0; i < array_size - 1; i++){
+      if ( sort_type ){
+        if ( sorted_array_ptr[i] > sorted_array_ptr[i + 1] ){
+          temp_array_element = sorted_array_ptr[i];
+          sorted_array_ptr[i] = sorted_array_ptr[i + 1];
+          sorted_array_ptr[i + 1] = temp_array_element;
+        };
+      } else {
+        if ( sorted_array_ptr[i] < sorted_array_ptr[i + 1] ){
+          temp_array_element = sorted_array_ptr[i];
+          sorted_array_ptr[i] = sorted_array_ptr[i + 1];
+          sorted_array_ptr[i + 1] = temp_array_element;
+        };
+      };
+    };
+    check_status = check_array(sorted_array_ptr, array_size, sort_type);
+  };
 };
