@@ -61,23 +61,23 @@ void print_array(unsigned char * data_array_ptr, unsigned int array_size){
 };
 
 void print_statistics(unsigned char * data_array_ptr, unsigned int array_size){
-  unsigned char array_mean, array_median, array_minimum, array_maximum;
+  unsigned char array_mean, array_minimum, array_maximum;
+  int array_median;
   
   array_mean = find_mean(data_array_ptr, array_size);
   array_median = find_median(data_array_ptr, array_size);
   array_minimum = find_minimum(data_array_ptr, array_size);
   array_maximum = find_maximum(data_array_ptr, array_size);
 
-  printf("\nRounded mean: %d \n\nRounded Median: %d \n\nMaximum: %d \n\nMinimum: %d \n", array_mean, array_median, array_maximum, array_minimum);
+  printf("\nRounded mean: %i \n\nRounded Median: %d \n\nMaximum: %d \n\nMinimum: %d \n", array_mean, array_median, array_maximum, array_minimum);
 };
 
-unsigned char find_mean(unsigned char * data_array_ptr, unsigned int array_size){
-  unsigned char mean = 0;
+int find_mean(unsigned char * data_array_ptr, unsigned int array_size){
+  int mean = 0;
 
   for(unsigned char i = 0; i < array_size; i++){
     mean += data_array_ptr[i];
   };
-
   mean /= array_size;
   return mean;
 };

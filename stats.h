@@ -54,7 +54,7 @@ void print_array(unsigned char * data_array_ptr, unsigned int array_size);
  * 
  * @return mean of the array
 */
-unsigned char find_mean(unsigned char * data_array_ptr, unsigned int array_size);
+int find_mean(unsigned char * data_array_ptr, unsigned int array_size);
 
 /** 
  * @brief Get the median of a given array.
